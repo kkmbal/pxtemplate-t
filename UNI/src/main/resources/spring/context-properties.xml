@@ -1,0 +1,47 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+	
+	<context:property-placeholder location="classpath:/properties/${uni.server.type:local}/config.properties" system-properties-mode="OVERRIDE" />
+
+	<!-- 어플리케이션에서 유일한 키값으로 키/값쌍을 가지고 오는 서비스 -->
+	<bean name="propertiesService" class="egovframework.rte.fdl.property.impl.EgovPropertyServiceImpl" destroy-method="destroy">
+
+		<property name="properties">
+	        <map>
+	        	<entry key="pageUnit" value="${page.countPerPage:10}"/>
+	        	<entry key="pageSize" value="${page.size:10}"/>
+	        	
+	        	<!-- 조직트리 쿼리 최상단 조직코드 -->
+	        	<entry key="START_DEPT_CODE" value="${portalxpert.startDeptCode:0}"/>
+	        	<!-- 업로드 첨부용량 제한 -->
+	        	<entry key="upload.file.size" value="${portalxpert.upload.file.size:1000}"/>
+	        	<!-- 미리보기 실경로 -->
+	        	<entry key="upload.temp.dir" value="${portalxpert.upload.temp.dir:/home/was/tomcat-portal/webapps/portalxpert/upload/temp/}"/>
+	        	<!-- 미리보기 웹경로 -->
+	        	<entry key="upload.temp.web" value="${portalxpert.upload.temp.web:/upload/temp/}"/>
+	        	<!-- 업로드 실경로 -->
+	        	<entry key="upload.real.dir" value="${portalxpert.upload.real.dir:/home/was/tomcat-portal/webapps/portalxpert/upload/}"/>
+	        	<!-- 업로드 웹경로 -->
+	        	<entry key="upload.real.web" value="${portalxpert.upload.real.web:/upload/}"/>
+	        	<!-- 동영상 썸네일 실경로 -->
+	        	<entry key="upload.thumbnail.dir" value="${portalxpert.upload.thumbnail.dir:/home/was/tomcat-portal/webapps/portalxpert/upload/movie/}"/>
+	        	<!-- 동영상 썸네일 웹경로 -->
+	        	<entry key="upload.thumbnail.web" value="${portalxpert.upload.thumbnail.web:/upload/movie}"/>
+	        	<!-- 동영상 썸네일기본 이미지 -->
+	        	<entry key="upload.thumbnail.file" value="${portalxpert.upload.thumbnail.file:movie_process.png}"/>
+	        	<!-- 개인 개시물당 첨부용량 제한  (디폴트 1GB) -->
+	        	<entry key="pbs.upload.file.size" value="${portalxpert.pbs.upload.file.size:1000}"/>
+	        	<!-- SNS 첨부  MAX SIZE -->
+	        	<entry key="person.tmln.apnd.size" value="${portalxpert.person.tmln.apnd.size:3}"/>
+
+				<!-- theme -->	        	
+	        </map>
+		</property>
+	</bean>
+</beans>	

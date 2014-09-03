@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="OrganizationDAO">
+	
+	<resultMap id="category" type="portalxpert.organization.model.CategoryVO">
+		<result property="id" column="user_id"/>
+		<result property="conts" column="cate_conts"/>
+	</resultMap>	
+	
+	
+	<resultMap id="bbsAuth" type="portalxpert.organization.model.BbsVO">
+		<result property="boardId" column="BOARD_ID"/>
+		<result property="boardOperYn" column="BOARD_OPER_YN"/>
+	</resultMap>
+	
+	<resultMap id="getUserSearchList" type="portalxpert.organization.model.UserVO">
+		<result property="userId" column="RESINUMBER"/>
+		<result property="userName" column="DISPLAYNAME"/>
+		<result property="deptName" column="ORGFULLNAME"/>
+		<result property="duty" column="TITLENAME"/>
+		<result property="phone" column="TELEPHONENUMBER"/>
+		<result property="eMail" column="MAIL"/>
+	</resultMap>
+	
+	<select id="getOrganizationList" parameterType="portalxpert.organization.model.OrganizationVO"
+		resultType="portalxpert.organization.model.OrganizationVO">
+		/* === OrganizationMapper.getOrganizationList === */
+		
+		SELECT *
+        FROM (
+        SELECT ID,PID,NAME,DEPT_CODE,OUCODE FROM (  
+        /*                                         
+            SELECT 0 RUM,                                              
+                   REPLACE (DEPT_CODE, '000000000',  {deptCode}) PID,    
+                    {deptCode} ID,                                  
+                   DEPT_NAME AS NAME,                                                
+                   DEPT_CODE,
+                   0 LVL                                        
+              FROM PSN_DEPT_INFO                                       
+             WHERE PAR_DEPT_CODE =  {deptCode}                                
+            UNION
+        */                                                      
+            SELECT *                                                   
+                  FROM (           
+                              SELECT ROWNUM RUM,                          
+                                   PAR_DEPT_CODE AS PID,                          
+                                   DEPT_CODE AS ID,                         
+                                   DEPT_NAME AS NAME,                             
+                                   DEPT_CODE DEPT_CODE,                          
+                                   DEPT_CODE OUCODE,                          
+                                   LEVEL LVL                            
+                              FROM PSN_DEPT_INFO                    
+                             WHERE DEPT_CODE IS NOT NULL             
+                        START WITH PAR_DEPT_CODE = #{deptCode}                       
+                  CONNECT BY PRIOR DEPT_CODE = PAR_DEPT_CODE           
+                   /* ORDER SIBLINGS BY EOUORDER, EOULEVEL */
+               )              
+        ) ORDER BY  PID,LVL, RUM
+        )
+       <!--  시구별 조직도
+        UNION ALL
+        SELECT '6110000' AS ID, '6000001' AS PID, '자치구' AS NAME, '6110000' AS OUCODE FROM DUAL                                     
+			UNION ALL                                    
+		SELECT * FROM (
+		SELECT OUCODE AS ID, PARENTOUCODE AS PID, OU AS NAME, OUCODE
+        FROM
+        (
+        SELECT LEVEL, LPAD(' ', LEVEL * 3, ' ') || OU, A.*    
+        FROM LDAP_DEPT_TBL A
+        <![CDATA[
+            WHERE OUCODE < '6000000'
+        ]]>            
+        START WITH PARENTOUCODE = '6110000'
+        CONNECT BY PARENTOUCODE = PRIOR OUCODE
+        ORDER SIBLINGS BY OUORDER))  -->
+        
+		
+		
+	</select>
+	
+	<select id="getOrganizationListBySearch"
+		parameterType="portalxpert.organization.model.OrganizationVO"
+		resultType="portalxpert.organization.model.OrganizationVO">
+		
+		/* === OrganizationMapper.findOrganizationList === */
+		
+	SELECT ID,PID,NAME,OUCODE                                                 
+	  FROM (           SELECT ROWNUM,                         
+	                          PAR_DEPT_CODE AS PID,                         
+	                          DEPT_CODE AS ID,                        
+	                          DEPT_FNAME AS NAME,                    
+	                          DEPT_CODE OUCODE,                         
+	                          LEVEL LVL                         
+	                     FROM PSN_DEPT_INFO   
+	                    WHERE DEPT_CODE IS NOT NULL                    
+	               START WITH PAR_DEPT_CODE = #{deptCode}              
+	               CONNECT BY PRIOR DEPT_CODE = PAR_DEPT_CODE          
+	        /* ORDER SIBLINGS BY EOUORDER, EOULEVEL */
+	        )             
+	 WHERE NAME LIKE '%'|| #{orgfullname} ||'%'  
+		
+	</select>
+		
+	<select id="getUserList" 
+			parameterType="portalxpert.organization.model.OrganizationVO"
+			resultType="portalxpert.organization.model.UserVO">
+		
+		/* === OrganizationMapper.getUserList === */
+		
+		  SELECT USER_ID RESINUMBER,                                  
+	         USER_NAME DISPLAYNAME,  
+	         DEPT_NAME OU,          
+	         DEPT_CODE OUCODE,                         
+	         TITLENAME,                                       
+	         TELEPHONENUMBER,
+	         MOBILE                                  
+	    FROM PSN_USER_INFO   
+	    <where>
+	    	<if test="oucode!=null">
+	    		DEPT_CODE = #{oucode}  
+	    	</if>
+	    	<if test="name!=null">
+	    		USER_NAME LIKE  '%'|| #{name} ||'%'                     
+	   			AND DEPT_CODE NOT IN ('D611428','D611415','D611446')      
+	    	</if>
+	    </where>                                 
+	/* ORDER BY EORDER */
+	   ORDER BY DEPT_NAME    
+	</select>
+	
+	<insert id="insertCategory">
+		<![CDATA[
+			INSERT INTO BBS_CATE_INFO 
+				( USER_ID
+				  , CATE_CONTS)
+			VALUES ( #{id}
+				  , #{conts})
+		]]>
+	</insert>
+	
+	<!-- 사용자게시판 카테고리사용 등록 -->
+	<insert id="insertPbsUserBoardCateUse" parameterType="portalxpert.board.board100.model.PbsUserBoardCateUseVO">
+		<![CDATA[
+		INSERT INTO PBS_USER_BOARD_CATE_USE(
+		 BOARD_ID
+		, USER_ID
+		, DEL_YN
+		, REGR_ID
+		, REGR_NAME
+		, REG_DTTM
+		, UPDR_ID
+		, UPDR_NAME
+		, UPD_DTTM
+		) VALUES (
+		 #{boardId}
+		, #{userId}
+		, #{delYn}
+		, #{regrId}
+		, #{regrName}
+		, sysdate
+		, #{updrId}
+		, #{updrName}
+		, sysdate
+		)
+		]]>
+	</insert>
+	
+	<delete id="deletePbsUserBoardCateUse" parameterType="portalxpert.board.board100.model.PbsUserBoardCateUseVO">
+		<![CDATA[
+		DELETE FROM PBS_USER_BOARD_CATE_USE WHERE USER_ID = #{userId}	
+		]]>
+	</delete>
+	
+	
+	<delete id="deleteCategory">
+			<![CDATA[
+				DELETE FROM BBS_CATE_INFO 
+				WHERE USER_ID=#{id}
+			]]>
+	</delete>
+	
+	<select id="getCategoryList" resultMap="category">
+		<![CDATA[
+			SELECT user_id,cate_conts
+			FROM BBS_CATE_INFO
+			WHERE user_id = #{id}
+		]]>
+	</select>
+		
+	<select id="getBbsAuthList" resultMap="bbsAuth">
+		<![CDATA[
+			select distinct BOARD_ID
+		  	  from bbs_board_user_map
+			 where user_id = #{userid}
+			   and user_div <> 'DPT'
+		]]>
+	</select>	
+		
+	<select id="getBbsOperInfo" resultMap="bbsAuth">
+		<![CDATA[
+			SELECT BOARD_ID
+			       ,BOARD_OPER_YN
+		  	  FROM BBS_BOARD_INFO
+			 WHERE 1 = 1
+		]]>
+			<if test="boardId !=null and boardId !=''">
+		     AND   BOARD_ID = #{BOARDID}
+		    </if>
+			<if test="boardOperYn !=null and boardOperYn !=''">
+			 AND   BOARD_OPER_YN = #{boardOperYn}
+		    </if>
+	</select>	
+	
+	<select id="getBbsAuthListNew" resultMap="bbsAuth" parameterType="portalxpert.common.model.BoardSearchVO">
+		<![CDATA[
+			SELECT 'BBS999999' AS BOARD_ID FROM DUAL
+			UNION ALL 
+			SELECT BOARD_ID 
+			FROM BBS_BOARD_USER_MAP
+			WHERE USER_ID IN (${userMap})
+			AND DEL_YN='N'
+			GROUP BY BOARD_ID
+		]]>
+	</select>
+	
+	<select id="getDeptMemberList" parameterType="portalxpert.common.model.UserInfoVO" resultMap="getUserSearchList">
+		/* === OrganizationMapper.getDeptMemberList === */
+		  	SELECT *
+			  FROM (
+               		SELECT ROWNUM AS PNUM
+               		     , S.*
+               		  FROM (
+		                    SELECT ROW_NUMBER() OVER (ORDER BY USER_NAME) AS RNUM
+						  		 , USER_ID RESINUMBER                                  
+					         	 , USER_NAME DISPLAYNAME
+					         	 , DEPT_FNAME ORGFULLNAME                                     
+					         	 , TITLENAME                                       
+					         	 , TELEPHONENUMBER
+					         	 , MAIL	         	                                   
+					    	  FROM PSN_USER_INFO 
+					    	 WHERE DEPT_CODE NOT IN ('D611428', 'D611415', 'D611446')
+					    	   AND DEPT_CODE = #{oucode}                          
+							) S
+					)             
+       		  WHERE RNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}   
+	</select>
+	
+	<select id="getDeptMemberListTotCnt" parameterType="portalxpert.common.model.UserInfoVO" resultType="int">
+		/* === OrganizationMapper.getUserSearchListTotCnt === */
+		  	SELECT COUNT(*) AS TOTCNT   	                                   
+	    	  FROM PSN_USER_INFO   
+	    	 WHERE DEPT_CODE NOT IN ('D611428', 'D611415', 'D611446')
+			   AND DEPT_CODE = #{oucode}
+	</select>
+	
+	<select id="getUserSearchList" parameterType="portalxpert.organization.model.UserVO" resultMap="getUserSearchList">
+		/* === OrganizationMapper.getUserSearchList === */
+		  	SELECT *
+			  FROM (
+               		SELECT ROWNUM AS PNUM
+               		     , S.*
+               		  FROM (
+		                    SELECT ROW_NUMBER() OVER (ORDER BY USER_NAME) AS RNUM
+						  		 , USER_ID RESINUMBER                                  
+					         	 , USER_NAME DISPLAYNAME
+					         	 , DEPT_FNAME ORGFULLNAME                                     
+					         	 , TITLENAME                                       
+					         	 , TELEPHONENUMBER
+					         	 , MAIL	         	                                   
+					    	  FROM PSN_USER_INFO 
+					    	 WHERE DEPT_CODE NOT IN ('D611428', 'D611415', 'D611446')
+				    	  	<if test="userName!=null and userName!=''">
+				    	  		AND DEPT_NAME LIKE '%'|| #{userName} ||'%'    
+				    	  	</if>
+				    	  	<if test="deptName!=null and deptName!=''">
+				    	  		AND DEPT_FNAME LIKE '%'|| #{deptName} ||'%' 
+				    		</if>
+				    		<if test="phone!=null and phone!=''">
+				    	  		AND TELEPHONENUMBER LIKE '%'|| #{phone} ||'%' 
+				    		</if>
+				    		<if test="eMail!=null and eMail!=''">
+				    	  		AND MAIL LIKE '%'|| #{eMail} ||'%' 
+				    		</if>                              
+							) S
+					)             
+       		  WHERE RNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}   
+	</select>
+	
+	<select id="getUserSearchListTotCnt" parameterType="portalxpert.organization.model.UserVO" resultType="int">
+		/* === OrganizationMapper.getUserSearchListTotCnt === */
+		  	SELECT COUNT(*) AS TOTCNT   	                                   
+	    	  FROM PSN_USER_INFO   
+	    	 WHERE DEPT_CODE NOT IN ('D611428', 'D611415', 'D611446')
+			<if test="userName!=null and userName!=''">
+	   	  		AND USER_NAME LIKE '%'|| #{userName} ||'%'    
+	   	  	</if>
+	   	  	<if test="deptName!=null and deptName!=''">
+	   	  		AND DEPT_FNAME LIKE '%'|| #{deptName} ||'%' 
+	   		</if>
+	   		<if test="phone!=null and phone!=''">
+	   	  		AND TELEPHONENUMBER LIKE '%'|| #{phone} ||'%' 
+	   		</if>
+	   		<if test="eMail!=null and eMail!=''">
+	   	  		AND MAIL LIKE '%'|| #{eMail} ||'%' 
+	   		</if>                              
+	</select>
+	
+	<select id="getDeptName" 
+			parameterType="portalxpert.organization.model.UserVO" 
+			resultType="portalxpert.organization.model.UserVO">
+		/* === OrganizationMapper.getDeptName === */
+		  	SELECT DEPT_CODE OUCODE
+		  		 , DEPT_NAME OU
+		  		 , DEPT_FNAME ORGFULLNAME                          
+  			  FROM PSN_DEPT_INFO                                     
+ 			 WHERE DEPT_CODE = #{oucode}
+	</select>
+	
+	<select id="getDeptNameMemberCnt" parameterType="portalxpert.organization.model.OrganizationVO" resultType="int">
+		/* === OrganizationMapper.getDeptNameMemberCnt === */
+		  	SELECT COUNT(*) AS TOTCNT
+	    	  FROM PSN_USER_INFO
+           <where>
+		    	<if test="oucode!=null and oucode!=''">
+		    		DEPT_CODE = #{oucode}  
+		    	</if>
+		    	<if test="name!=null and name!=''">
+		    		USER_NAME LIKE  '%'|| #{name} ||'%'                     
+		   			AND DEPT_CODE NOT IN ('D611428','D611415','D611446')      
+		    	</if>
+		   </where>
+	</select>
+	
+</mapper>
