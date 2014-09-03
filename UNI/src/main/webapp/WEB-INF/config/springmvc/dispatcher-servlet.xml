@@ -13,12 +13,13 @@
 
 	<mvc:annotation-driven />
 
-	<!-- 
+	
  	<mvc:interceptors>
 		<bean class="portalxpert.common.web.AuthInterceptor">
 			<property name="exceptLogin">
 				<list>
 					<value>/getLogin.do</value>
+					<value>/common/login/login.do</value>
 					<value>/login/login.do</value>
 					<value>/doLogin.do</value>
 					<value>/logout.do</value>
@@ -27,10 +28,12 @@
 				</list>
 			</property>
 		</bean>
+		<!-- 
 		<bean class="portalxpert.common.web.AuthUrlPatternInterceptor">
 			<property name="exceptPattern">
 				<list>
 					<value>/getLogin.do</value>
+					<value>/common/login/login.do</value>
 					<value>/login/login.do</value>
 					<value>/doLogin.do</value>
 					<value>/logout.do</value>
@@ -39,8 +42,9 @@
 				</list>
 			</property>
 		</bean>
+		-->
 	</mvc:interceptors>    
-	--> 
+	
 
 	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
 		<property name="defaultErrorView" value="common/error/bizError"/>

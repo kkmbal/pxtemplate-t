@@ -155,7 +155,7 @@
 	<insert id="insertAdmBannerAppendImg" parameterType="portalxpert.adm.banner.model.AdmBannerApndFileVO">
 		<selectKey keyProperty="apndFileSeq" resultType="int" order="BEFORE" >
 			SELECT (LPAD(TO_CHAR((SELECT NVL(MAX(TO_NUMBER(APND_FILE_SEQ)),0)+1 FROM ADM_BANNER_APND_FILE)), '6', '0')) AS APND_FILE_SEQ
-			FROM DUAL     	    
+			FROM DB_ROOT     	    
 	    </selectKey>
 	    
 	    <![CDATA[

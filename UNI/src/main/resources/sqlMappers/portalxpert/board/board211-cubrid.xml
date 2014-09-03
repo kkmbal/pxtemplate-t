@@ -177,7 +177,7 @@
 							<![CDATA[ AND A.NOTI_BGN_DTTM >= TO_DATE(#{dateSt},'yyyy-mm-dd') ]]>
 						</if>
 						<if test="dateEd!=null and dateEd!=''">
-							<![CDATA[ AND A.NOTI_BGN_DTTM <= TO_DATE(#{dateEd} || '23:59:59','yyyy-mm-dd hh24:mi:ss') ]]>
+							<![CDATA[ AND A.NOTI_BGN_DTTM <= TO_DATETIME(#{dateEd} || '23:59:59','yyyy-mm-dd hh24:mi:ss') ]]>
 						</if>
 						
 		           )D
@@ -214,7 +214,7 @@
 					<![CDATA[ AND B.NOTI_BGN_DTTM >= TO_DATE(#{dateSt},'yyyy-mm-dd') ]]>
 				</if>
 				<if test="dateEd!=null and dateEd!=''">
-					<![CDATA[ AND B.NOTI_BGN_DTTM <= TO_DATE(#{dateEd} || '23:59:59','yyyy-mm-dd hh24:mi:ss') ]]>
+					<![CDATA[ AND B.NOTI_BGN_DTTM <= TO_DATETIME(#{dateEd} || '23:59:59','yyyy-mm-dd hh24:mi:ss') ]]>
 				</if>                    
 		  ) WHERE RNUM BETWEEN #{firstIndex}  AND #{lastIndex}        
 		
@@ -254,7 +254,7 @@
 					<![CDATA[ AND A.NOTI_BGN_DTTM >= TO_DATE(#{dateSt},'yyyy-mm-dd') ]]>
 				</if>
 				<if test="dateEd!=null and dateEd!=''">
-					<![CDATA[ AND A.NOTI_BGN_DTTM <= TO_DATE(#{dateEd} || '23:59:59','yyyy-mm-dd hh24:mi:ss') ]]>
+					<![CDATA[ AND A.NOTI_BGN_DTTM <= TO_DATETIME(#{dateEd} || '23:59:59','yyyy-mm-dd hh24:mi:ss') ]]>
 				</if>
 				
 				       
@@ -294,7 +294,7 @@
 			<![CDATA[ AND B.NOTI_BGN_DTTM >= TO_DATE(#{dateSt},'yyyy-mm-dd') ]]>
 		</if>
 		<if test="dateEd!=null and dateEd!=''">
-			<![CDATA[ AND B.NOTI_BGN_DTTM <= TO_DATE(#{dateEd} || '23:59:59','yyyy-mm-dd hh24:mi:ss') ]]>
+			<![CDATA[ AND B.NOTI_BGN_DTTM <= TO_DATETIME(#{dateEd} || '23:59:59','yyyy-mm-dd hh24:mi:ss') ]]>
 		</if>
 		
 		                                                             
@@ -311,7 +311,7 @@
                WHEN CDLN_EVNT_CODE = 'NT' THEN '[공지]'
                ELSE  '[' || (SELECT CD_NM FROM COM_CODE_SPEC WHERE CD = 'CBV' AND CD_SPEC = N.CDLN_EVNT_CODE) || ' ' || CDLN_OBJR_NAME || ']' 
                END AS CDLN_TITLE
-             , NVL((SELECT 'Y' FROM DUAL WHERE EXISTS (SELECT 1 FROM BBS_NOTI_EVAL_INFO WHERE NOTI_ID = N.NOTI_ID AND USER_ID = #{userId} AND NOTI_EVAL_DIV = '040')), 'N') AS NOTI_READ_YN  
+             , NVL((SELECT 'Y' FROM DB_ROOT WHERE EXISTS (SELECT 1 FROM BBS_NOTI_EVAL_INFO WHERE NOTI_ID = N.NOTI_ID AND USER_ID = #{userId} AND NOTI_EVAL_DIV = '040')), 'N') AS NOTI_READ_YN  
 			 , N.*   
 		FROM (SELECT 
 					 NOTI_TITLE,
@@ -432,7 +432,7 @@
 	                        	
 	                        	<!-- AND TO_CHAR(REG_DTTM,'yyyy-mm-dd') < #{regDttmTo} -->
 	                        	<![CDATA[	                        	
-	                        	AND UPD_DTTM <= TO_DATE(#{regDttmTo} || '23:59:59','yyyy-mm-dd hh24:mi:ss')
+	                        	AND UPD_DTTM <= TO_DATETIME(#{regDttmTo} || '23:59:59','yyyy-mm-dd hh24:mi:ss')
 	                        	]]>
 	                        </if>
 	                        AND EXISTS(SELECT 1 
@@ -500,7 +500,7 @@
         </if>
         <if test="regDttmTo != null and regDttmTo != '' ">
         	<![CDATA[	                        	
-	          AND UPD_DTTM <= TO_DATE(#{regDttmTo} || '23:59:59','yyyy-mm-dd hh24:mi:ss')
+	          AND UPD_DTTM <= TO_DATETIME(#{regDttmTo} || '23:59:59','yyyy-mm-dd hh24:mi:ss')
 	        ]]>	
         </if>   	
 		AND EXISTS(SELECT 1 

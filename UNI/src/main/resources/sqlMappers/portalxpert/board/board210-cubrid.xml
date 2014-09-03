@@ -106,7 +106,7 @@
                WHEN CDLN_EVNT_CODE = 'NT' THEN '[공지]'
                ELSE  '[' || (SELECT CD_NM FROM COM_CODE_SPEC WHERE CD = 'CBV' AND CD_SPEC = N.CDLN_EVNT_CODE) || ' ' || CDLN_OBJR_NAME || ']' 
                END AS CDLN_TITLE
-             , NVL((SELECT 'Y' FROM DUAL WHERE EXISTS (SELECT 1 FROM BBS_NOTI_EVAL_INFO WHERE NOTI_ID = N.NOTI_ID AND USER_ID = #{userId} AND NOTI_EVAL_DIV = '040')), 'N') AS NOTI_READ_YN  
+             , NVL((SELECT 'Y' FROM DB_ROOT WHERE EXISTS (SELECT 1 FROM BBS_NOTI_EVAL_INFO WHERE NOTI_ID = N.NOTI_ID AND USER_ID = #{userId} AND NOTI_EVAL_DIV = '040')), 'N') AS NOTI_READ_YN  
 			 , N.*   
 		FROM (SELECT 
 					<![CDATA[
@@ -244,7 +244,7 @@
 	                        </if>
 	                        <if test="regDttmTo != null and regDttmTo != '' ">
 	                        	<![CDATA[	                        	
-	                        	AND NOTI_END_DTTM <= TO_DATE(#{regDttmTo} || ' 23:59:59','yyyy-mm-dd hh24:mi:ss')
+	                        	AND NOTI_END_DTTM <= TO_DATETIME(#{regDttmTo} || ' 23:59:59','yyyy-mm-dd hh24:mi:ss')
 	                        	]]>
 	                        </if>
 	                        <if test="calYmFrom != null and calYmFrom != '' ">/* 달력 */
@@ -254,7 +254,7 @@
 	                        </if>
 	                        <if test="calYmTo != null and calYmTo != '' ">/* 달력 */
 	                        	<![CDATA[	                        	
-	                        	AND NOTI_END_DTTM >= TO_DATE(#{calYmFrom} || ' 23:59:59','yyyy-mm-dd hh24:mi:ss')
+	                        	AND NOTI_END_DTTM >= TO_DATETIME(#{calYmFrom} || ' 23:59:59','yyyy-mm-dd hh24:mi:ss')
 	                        	]]>
 	                        </if>
 	                        <if test="notiReadmanAsgnYn != null and notiReadmanAsgnYn.equalsIgnoreCase('N') ">
@@ -417,7 +417,7 @@
 		</if>
 		<if test="regDttmTo != null and regDttmTo != '' ">
 			<![CDATA[
-			AND NOTI_END_DTTM <= TO_DATE(#{regDttmTo} || ' 23:59:59','yyyy-mm-dd hh24:mi:ss')
+			AND NOTI_END_DTTM <= TO_DATETIME(#{regDttmTo} || ' 23:59:59','yyyy-mm-dd hh24:mi:ss')
 			]]>	
 		</if>               		
         <if test="notiReadmanAsgnYn != null and notiReadmanAsgnYn.equalsIgnoreCase('N') ">
@@ -446,7 +446,7 @@
                WHEN CDLN_EVNT_CODE = 'NT' THEN '[공지]'
                ELSE  '[' || (SELECT CD_NM FROM COM_CODE_SPEC WHERE CD = 'CBV' AND CD_SPEC = N.CDLN_EVNT_CODE) || ' ' || CDLN_OBJR_NAME || ']' 
                END AS CDLN_TITLE
-             , NVL((SELECT 'Y' FROM DUAL WHERE EXISTS (SELECT 1 FROM BBS_NOTI_EVAL_INFO WHERE NOTI_ID = N.NOTI_ID AND USER_ID = #{userId} AND NOTI_EVAL_DIV = '040')), 'N') AS NOTI_READ_YN  
+             , NVL((SELECT 'Y' FROM DB_ROOT WHERE EXISTS (SELECT 1 FROM BBS_NOTI_EVAL_INFO WHERE NOTI_ID = N.NOTI_ID AND USER_ID = #{userId} AND NOTI_EVAL_DIV = '040')), 'N') AS NOTI_READ_YN  
 			 , N.*   
 		FROM (SELECT 
 					<![CDATA[
@@ -583,7 +583,7 @@
 	                        </if>
 	                        <if test="regDttmTo != null and regDttmTo != '' ">
 	                        	<![CDATA[	                        	
-	                        	AND UPD_DTTM <= TO_DATE(#{regDttmTo} || ' 23:59:59','yyyy-mm-dd hh24:mi:ss')
+	                        	AND UPD_DTTM <= TO_DATETIME(#{regDttmTo} || ' 23:59:59','yyyy-mm-dd hh24:mi:ss')
 	                        	]]>
 	                        </if>
 	                        <if test="notiReadmanAsgnYn != null and notiReadmanAsgnYn.equalsIgnoreCase('N') ">
@@ -730,7 +730,7 @@
 			SELECT COUNT(BRD_ID) CNT 
 			FROM BBS_FAVORITE 
 			WHERE USER_ID = #{userId} 
-			AND BRD_ID =#{boardId} 
+			AND BOARD_ID =#{boardId} 
 	</select>
 	
 	<!-- 즐겨찾기 추가 -->
@@ -738,7 +738,7 @@
 		<![CDATA[
 		INSERT INTO BBS_FAVORITE(
 		 USER_ID
-		, BRD_ID
+		, BOARD_ID
 		) VALUES (
 		  #{userId}
 		, #{boardId} 
@@ -751,17 +751,17 @@
 		<![CDATA[
 		DELETE FROM BBS_FAVORITE 
 		WHERE USER_ID = #{userId} 
-		AND BRD_ID = #{boardId} 
+		AND BOARD_ID = #{boardId} 
 		]]>
 	</delete>
 	
 	<select id="getMaxNotiId" resultType = "String" >
 		
-		SELECT 'S'||LPAD(SEQ_NOTI_ID.NEXTVAL,8,'0') As notiId FROM DUAL
+		SELECT 'S'||LPAD(SEQ_NOTI_ID.NEXTVAL,8,'0') As notiId FROM DB_ROOT
 	</select>
 	
 	<select id="getMaxSurveyNo" resultType = "int" >
-		 SELECT SEQ_NOTI_SURVEY.NEXTVAL As SURVEY_NO FROM DUAL 
+		 SELECT SEQ_NOTI_SURVEY.NEXTVAL As SURVEY_NO FROM DB_ROOT 
 	</select>
 	 
 	<!-- 게시글 이동 -->
@@ -906,7 +906,7 @@
 	<!-- 링크등록 -->
 	<insert id="insertBbsNotiInfoForLink" parameterType="portalxpert.board.board100.model.BbsNotiInfoVO">
 		<selectKey keyProperty="notiId" resultType="String" order="BEFORE" >
-		  SELECT 'S'||LPAD(SEQ_NOTI_ID.NEXTVAL,8,'0') As notiId FROM DUAL 
+		  SELECT 'S'||LPAD(SEQ_NOTI_ID.NEXTVAL,8,'0') As notiId FROM DB_ROOT 
 	    </selectKey>
 		<![CDATA[
 		INSERT INTO BBS_NOTI_INFO(
@@ -960,7 +960,7 @@
 		, #{updrName}
 		, SYSDATE
 		, SYSDATE
-		, TO_DATE(TO_CHAR(ADD_MONTHS(SYSDATE, +1), 'YYYY-MM-DD')||'23:59:59', 'YYYY-MM-DD HH24:MI:SS') /* 게시종료일 */
+		, TO_DATETIME(TO_CHAR(ADD_MONTHS(SYSDATE, +1), 'YYYY-MM-DD')||'23:59:59', 'YYYY-MM-DD HH24:MI:SS') /* 게시종료일 */
 		, 'N'
 		, (SELECT NVL(MAX(TO_NUMBER(OLD_NOTICE_SEQ)), 0) + 1 FROM BBS_NOTI_INFO WHERE BOARD_ID = #{boardId})
 		)
@@ -1737,7 +1737,7 @@
 	                        	
 	                        	<!-- AND TO_CHAR(REG_DTTM,'yyyy-mm-dd') < #{regDttmTo} -->
 	                        	<![CDATA[	                        	
-	                        	AND UPD_DTTM <= TO_DATE(#{regDttmTo} || '23:59:59','yyyy-mm-dd hh24:mi:ss')
+	                        	AND UPD_DTTM <= TO_DATETIME(#{regDttmTo} || '23:59:59','yyyy-mm-dd hh24:mi:ss')
 	                        	]]>
 	                        </if>
 	                        AND EXISTS(SELECT 1 

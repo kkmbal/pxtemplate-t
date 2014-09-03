@@ -12,10 +12,6 @@
 		      ,MAIL
 		      ,USER_ID SID
 		      ,USER_PASSWORD PASSWD
-		      ,(SELECT U.FILE_PATH ||'/'|| U.FILE_NAME  
-                FROM PSN_USER_POTO_INFO U
-                WHERE A.USER_ID = U.USER_ID
-                AND A.SLCT_POTO_SEQ = U.POTO_SEQ ) USER_REP_IMG
               ,USER_NICK NICKNAME
 		FROM PSN_USER_INFO A
 		WHERE USER_ID = #{userId}
@@ -33,10 +29,6 @@
 		      ,MAIL
 		      ,USER_ID SID
 		      ,USER_PASSWORD PASSWD
-		      ,(SELECT U.FILE_PATH ||'/'|| U.FILE_NAME  
-                FROM PSN_USER_POTO_INFO U
-                WHERE A.USER_ID = U.USER_ID
-                AND A.SLCT_POTO_SEQ = U.POTO_SEQ ) USER_REP_IMG
               ,USER_NICK NICKNAME
               ,NVL(TMLN_READ_DTTM, SYSDATE) TMLN_READ_DTTM
 		FROM PSN_USER_INFO A

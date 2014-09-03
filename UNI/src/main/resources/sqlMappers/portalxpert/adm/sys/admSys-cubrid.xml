@@ -897,7 +897,7 @@
 		, UPD_DTTM
 		) VALUES (
 		 #{authCd}
-		, #{menuConts}
+		, CHAR_TO_CLOB(#{menuConts})
 		, #{delYn}
 		, #{updrId}
 		, #{updrName}
@@ -912,7 +912,7 @@
 	<update id="updateMenuAuth" parameterType="portalxpert.adm.sys.model.AdmSysMenuAuthVO">
 		<![CDATA[
 			UPDATE ADM_MENU_AUTH SET UPDR_ID = #{updrId}, UPD_DTTM = sysdate
-									, MENU_CONTS = #{menuConts}
+									, MENU_CONTS = CHAR_TO_CLOB(#{menuConts})
 		]]>
 		<if test="delYn != null and delYn != ''"> , DEL_YN = #{delYn} </if>
 		WHERE AUTH_CD = #{authCd}

@@ -234,14 +234,14 @@
 	<select id="getMovieKey" resultType="int">
 		<![CDATA[
 			SELECT SEQ_MVP_KEY.NEXTVAL 
-			FROM DUAL
+			FROM DB_ROOT
 		]]>
 	</select>
 	
 	<insert id="insertBbsTmpNotiInfo">
 	<selectKey keyProperty="tmpNotiSeq" resultType="int" order="BEFORE" >
 		  SELECT SEQ_TMP_NOTI_INFO.NEXTVAL As tmpNotiSeq 
-			FROM DUAL	     	    
+			FROM DB_ROOT	     	    
     </selectKey>	
 		<![CDATA[
 		INSERT INTO BBS_TMP_NOTI_INFO(
@@ -309,7 +309,7 @@
 		, #{notiTitleOrgn}
 		, #{titleBoldYn}
 		, #{titleColorDiv}
-		, #{notiConts}
+		, CHAR_TO_CLOB(#{notiConts})
 		, #{linkUrl}
 		, #{notiTp}
 		, #{notiKind}
@@ -318,8 +318,8 @@
 		, #{userName}
 		, #{editDiv}
 		, #{rsrvYn}
-		, CASE WHEN #{rsrvYn} = 'Y' THEN TO_DATE(#{notiBgnDttm}, 'YYYY-MM-DD HH24:MI:SS') ELSE sysdate END		
-		, TO_DATE(#{notiEndDttm}, 'YYYY-MM-DD HH24:MI:SS')		
+		, CASE WHEN #{rsrvYn} = 'Y' THEN TO_DATETIME(#{notiBgnDttm}, 'YYYY-MM-DD HH24:MI:SS') ELSE sysdate END		
+		, TO_DATETIME(#{notiEndDttm}, 'YYYY-MM-DD HH24:MI:SS')		
 		, #{notiOpenDiv}
 		, #{notiOpenDivSpec}
 		, #{publAsgnDiv}
@@ -355,7 +355,7 @@
 	<insert id="insertBbsTmpNotiApndFile">
 	<selectKey keyProperty="apndFileSeq" resultType="int" order="BEFORE" >
 		  SELECT SEQ_TMP_NOTI_APND.NEXTVAL As apndFileSeq 
-			FROM DUAL	     	    
+			FROM DB_ROOT	     	    
     </selectKey>
 		<![CDATA[
 		INSERT INTO BBS_TMP_NOTI_APND_FILE(
@@ -403,7 +403,7 @@
 	<insert id="insertBbsTmpNotiSurvey">
 		<selectKey keyProperty="surveyNo" resultType="int" order="BEFORE" >
 		  SELECT SEQ_NOTI_SURVEY.NEXTVAL As surveyNo 
-			FROM DUAL
+			FROM DB_ROOT
 	    </selectKey>
 		<![CDATA[
 			INSERT INTO BBS_NOTI_SURVEY(
@@ -431,7 +431,7 @@
 			, #{tmpNotiSeq}
 			, #{tmlnSeq}
 			, #{userNotiSeq}
-			, TO_DATE(#{surveyClosDttm}, 'YYYY-MM-DD HH24:MI:SS')
+			, TO_DATETIME(#{surveyClosDttm}, 'YYYY-MM-DD HH24:MI:SS')
 			, #{surveyRsltOpenYn}
 			, #{surveyConts}
 			, #{surveyTp}
@@ -450,7 +450,7 @@
 	<insert id="insertBbsTmpNotiSurveyExmpl" >
 		<selectKey keyProperty="exmplNo" resultType="int" order="BEFORE" >
 		  SELECT SEQ_NOTI_EXMPL.NEXTVAL As exmplNo 
-			FROM DUAL
+			FROM DB_ROOT
 	    </selectKey>
 		<![CDATA[
 		INSERT INTO BBS_NOTI_SURVEY_EXMPL(
@@ -824,8 +824,8 @@
 		<if test="userName != null and userName != ''"> , USER_NAME = #{userName} </if>
 		<if test="editDiv != null and editDiv != ''"> , EDIT_DIV = #{editDiv} </if>
 		<if test="rsrvYn != null and rsrvYn != ''"> , RSRV_YN = #{rsrvYn} </if>
-		<if test="notiBgnDttm != null and notiBgnDttm != ''"> , NOTI_BGN_DTTM = TO_DATE(#{notiBgnDttm}, 'YYYY-MM-DD HH24:MI:SS') </if>
-		<if test="notiEndDttm != null and notiEndDttm != ''"> , NOTI_END_DTTM = TO_DATE(#{notiEndDttm}, 'YYYY-MM-DD HH24:MI:SS') </if>
+		<if test="notiBgnDttm != null and notiBgnDttm != ''"> , NOTI_BGN_DTTM = TO_DATETIME(#{notiBgnDttm}, 'YYYY-MM-DD HH24:MI:SS') </if>
+		<if test="notiEndDttm != null and notiEndDttm != ''"> , NOTI_END_DTTM = TO_DATETIME(#{notiEndDttm}, 'YYYY-MM-DD HH24:MI:SS') </if>
 		<if test="notiOpenDiv != null and notiOpenDiv != ''"> , NOTI_OPEN_DIV = #{notiOpenDiv} </if>
 		<if test="notiOpenDivSpec != null and notiOpenDivSpec != ''"> , NOTI_OPEN_DIV_SPEC = #{notiOpenDivSpec} </if>
 		<if test="publAsgnDiv != null and publAsgnDiv != ''"> , PUBL_ASGN_DIV = #{publAsgnDiv} </if>

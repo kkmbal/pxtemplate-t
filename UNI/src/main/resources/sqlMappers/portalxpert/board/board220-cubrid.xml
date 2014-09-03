@@ -103,7 +103,7 @@
                WHEN CDLN_EVNT_CODE = 'NT' THEN '[공지]'
                ELSE  '[' || (SELECT CD_NM FROM COM_CODE_SPEC WHERE CD = 'CBV' AND CD_SPEC = N.CDLN_EVNT_CODE) || ' ' || CDLN_OBJR_NAME || ']' 
                END AS CDLN_TITLE
-             , NVL((SELECT 'Y' FROM DUAL WHERE EXISTS (SELECT 1 FROM BBS_NOTI_EVAL_INFO WHERE NOTI_ID = N.NOTI_ID AND USER_ID = #{userId} AND NOTI_EVAL_DIV = '040')), 'N') AS NOTI_READ_YN  
+             , NVL((SELECT 'Y' FROM DB_ROOT WHERE EXISTS (SELECT 1 FROM BBS_NOTI_EVAL_INFO WHERE NOTI_ID = N.NOTI_ID AND USER_ID = #{userId} AND NOTI_EVAL_DIV = '040')), 'N') AS NOTI_READ_YN  
 			 , N.*   
 		FROM (SELECT 
 					 NOTI_TITLE,
@@ -219,7 +219,7 @@
 	                        </if>
 	                        <if test="regDttmTo != null and regDttmTo != '' ">
 	                        	<![CDATA[	                        	
-	                        	AND UPD_DTTM <= TO_DATE(#{regDttmTo} || ' 23:59:59','yyyy-mm-dd hh24:mi:ss')
+	                        	AND UPD_DTTM <= TO_DATETIME(#{regDttmTo} || ' 23:59:59','yyyy-mm-dd hh24:mi:ss')
 	                        	]]>
 	                        </if>
 	                        <if test="notiReadmanAsgnYn != null and notiReadmanAsgnYn.equalsIgnoreCase('N') ">

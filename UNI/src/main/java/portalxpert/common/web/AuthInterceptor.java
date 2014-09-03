@@ -48,7 +48,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
             		//throw new Exception("SESSION_CLOSE");
             		return false;
             	}else{
-            		response.sendRedirect(request.getContextPath() + "/index.html");
+            		response.sendRedirect(request.getContextPath() + "/index.jsp");
             	}
             	return false;
             }

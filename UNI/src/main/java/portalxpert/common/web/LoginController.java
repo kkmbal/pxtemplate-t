@@ -51,32 +51,36 @@ public class LoginController {
 			if(ssnId == null || "".equals(ssnId)) {
 				vo = userLoginService.getLoginInfo(userId);
 				
-				//권한
-				List<AdmSysAuthVO> authList = admSysAuthService.getAuthInfo(userId);
-				vo.setAuthCd(getAuthList(authList));
-				vo.setAuthCdStr(CommUtil.getListToStr(getAuthList(authList)));
-				
-				// 메뉴
-				AdmSysMenuAuthVO admSysMenuAuthVO = new AdmSysMenuAuthVO();
-				admSysMenuAuthVO.setAuthCd(vo.getAuthCdStr());
-				admSysMenuAuthVO = admSysAuthService.getAdmSysMenuAuthInfo(admSysMenuAuthVO);
-				if(admSysMenuAuthVO != null){
-					vo.setMenuConts(admSysMenuAuthVO.getMenuConts());
+				if(vo != null){
+					//권한
+					List<AdmSysAuthVO> authList = admSysAuthService.getAuthInfo(userId);
+					vo.setAuthCd(getAuthList(authList));
+					vo.setAuthCdStr(CommUtil.getListToStr(getAuthList(authList)));
+					
+					// 메뉴
+					AdmSysMenuAuthVO admSysMenuAuthVO = new AdmSysMenuAuthVO();
+					admSysMenuAuthVO.setAuthCd(vo.getAuthCdStr());
+					admSysMenuAuthVO = admSysAuthService.getAdmSysMenuAuthInfo(admSysMenuAuthVO);
+					if(admSysMenuAuthVO != null){
+						vo.setMenuConts(admSysMenuAuthVO.getMenuConts());
+					}
 				}
 			}else {
 				vo = userLoginService.getLoginInfoBySsnId(ssnId);
 				
-				//권한
-				List<AdmSysAuthVO> authList = admSysAuthService.getAuthInfo(vo.getId());
-				vo.setAuthCd(getAuthList(authList));
-				vo.setAuthCdStr(CommUtil.getListToStr(getAuthList(authList)));
-				
-				// 메뉴
-				AdmSysMenuAuthVO admSysMenuAuthVO = new AdmSysMenuAuthVO();
-				admSysMenuAuthVO.setAuthCd(vo.getAuthCdStr());
-				admSysMenuAuthVO = admSysAuthService.getAdmSysMenuAuthInfo(admSysMenuAuthVO);
-				if(admSysMenuAuthVO != null){
-					vo.setMenuConts(admSysMenuAuthVO.getMenuConts());
+				if(vo != null){
+					//권한
+					List<AdmSysAuthVO> authList = admSysAuthService.getAuthInfo(vo.getId());
+					vo.setAuthCd(getAuthList(authList));
+					vo.setAuthCdStr(CommUtil.getListToStr(getAuthList(authList)));
+					
+					// 메뉴
+					AdmSysMenuAuthVO admSysMenuAuthVO = new AdmSysMenuAuthVO();
+					admSysMenuAuthVO.setAuthCd(vo.getAuthCdStr());
+					admSysMenuAuthVO = admSysAuthService.getAdmSysMenuAuthInfo(admSysMenuAuthVO);
+					if(admSysMenuAuthVO != null){
+						vo.setMenuConts(admSysMenuAuthVO.getMenuConts());
+					}
 				}
 			}
 			

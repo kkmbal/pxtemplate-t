@@ -60,7 +60,7 @@
         )
        <!--  시구별 조직도
         UNION ALL
-        SELECT '6110000' AS ID, '6000001' AS PID, '자치구' AS NAME, '6110000' AS OUCODE FROM DUAL                                     
+        SELECT '6110000' AS ID, '6000001' AS PID, '자치구' AS NAME, '6110000' AS OUCODE FROM DB_ROOT                                     
 			UNION ALL                                    
 		SELECT * FROM (
 		SELECT OUCODE AS ID, PARENTOUCODE AS PID, OU AS NAME, OUCODE
@@ -214,7 +214,7 @@
 	
 	<select id="getBbsAuthListNew" resultMap="bbsAuth" parameterType="portalxpert.common.model.BoardSearchVO">
 		<![CDATA[
-			SELECT 'BBS999999' AS BOARD_ID FROM DUAL
+			SELECT 'BBS999999' AS BOARD_ID FROM DB_ROOT
 			UNION ALL 
 			SELECT BOARD_ID 
 			FROM BBS_BOARD_USER_MAP

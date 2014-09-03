@@ -453,8 +453,8 @@
 					, #{boardOpenDiv}
 					, #{boardOpenDivSpec}
 					, #{boardOperDiv}
-					, TO_DATE(#{boardOperBgnDttm}, 'YYYY-MM-DD HH24:MI:SS')
-					, TO_DATE(#{boardOperEndDttm}, 'YYYY-MM-DD HH24:MI:SS')
+					, TO_DATE(#{boardOperBgnDttm}, 'YYYYMMDD')
+					, TO_DATE(#{boardOperEndDttm}, 'YYYYMMDD')
 					, #{notiTermDiv}
 					, #{publAsgnDiv}
 					, #{publAsgnDivSpec}
@@ -631,7 +631,7 @@
 			(SELECT CASE WHEN COUNT(1) > 0 THEN 'Y' ELSE 'N' END  
 			FROM BBS_FAVORITE 
 			WHERE USER_ID = #{userId} 
-			AND BRD_ID = #{boardId}) FAVORITE_YN
+			AND BOARD_ID = #{boardId}) FAVORITE_YN
 		</if>
 		FROM BBS_BOARD_INFO X
 		WHERE 1=1
@@ -782,7 +782,7 @@
 	<insert id="insertPbsUserBoardInfo" parameterType="portalxpert.board.board100.model.PbsUserBoardInfoVO" >
 		<selectKey keyProperty="boardId" resultType="String" order="BEFORE" >
 		  SELECT LPAD(SEQ_BOARD_INFO.NEXTVAL,9,'0') As boardId 
-			FROM DUAL	     	    
+			FROM DB_ROOT	     	    
 	    </selectKey>
 		<![CDATA[
 		INSERT INTO PBS_USER_BOARD_INFO(
@@ -1094,7 +1094,7 @@
 	<insert id="insertBbsNotiInfo">
 		<selectKey keyProperty="notiId" resultType="String" order="BEFORE" >
 		  SELECT 'S'||LPAD(SEQ_NOTI_ID.NEXTVAL,8,'0') As notiId 
-			FROM DUAL
+			FROM DB_ROOT
 	    </selectKey>	    				
 		INSERT INTO BBS_NOTI_INFO(
 		  NOTI_ID
@@ -1171,7 +1171,7 @@
 		, #{notiTitleOrgn}
 		, #{titleBoldYn}
 		, #{titleColorDiv}
-		, #{notiConts}
+		, CHAR_TO_CLOB(#{notiConts})
 		, #{linkUrl}
 		, #{notiTp}
 		, #{notiKind}
@@ -1181,8 +1181,8 @@
 		, #{userId}
 		, #{editDiv}
 		, #{rsrvYn}	
-		, CASE WHEN #{rsrvYn} = 'Y' THEN TO_DATE(#{notiBgnDttm}, 'YYYY-MM-DD HH24:MI:SS') ELSE sysdate END		
-		, TO_DATE(#{notiEndDttm}, 'YYYY-MM-DD HH24:MI:SS')
+		, CASE WHEN #{rsrvYn} = 'Y' THEN TO_DATETIME(#{notiBgnDttm}, 'YYYY-MM-DD HH24:MI:SS') ELSE sysdate END		
+		, TO_DATETIME(#{notiEndDttm}, 'YYYY-MM-DD HH24:MI:SS')
 		, #{notiOpenDiv}
 		, #{notiOpenDivSpec}
 		, #{publAsgnDiv}
@@ -1317,7 +1317,7 @@
 	<insert id="insertBbsNotiOpn">
 		<selectKey keyProperty="opnSeq" resultType="int" order="BEFORE" >
 		  SELECT SEQ_NOTI_OPN.NEXTVAL As opnSeq 
-			FROM DUAL
+			FROM DB_ROOT
 	    </selectKey>
 		<![CDATA[
 		INSERT INTO BBS_NOTI_OPN(
@@ -1383,7 +1383,7 @@
 	<insert id="insertBbsNotiApndFile">
 		<selectKey keyProperty="apndFileSeq" resultType="int" order="BEFORE" >
 		  SELECT SEQ_NOTI_APND.NEXTVAL As apndFileSeq 
-			FROM DUAL	     	    
+			FROM DB_ROOT	     	    
 	    </selectKey>
 	    <![CDATA[
 			INSERT INTO BBS_NOTI_APND_FILE(
@@ -2022,7 +2022,7 @@
 	<insert id="insertBbsNotiSurvey">
 		<selectKey keyProperty="surveyNo" resultType="int" order="BEFORE" >
 		  SELECT SEQ_NOTI_SURVEY.NEXTVAL As surveyNo 
-			FROM DUAL
+			FROM DB_ROOT
 	    </selectKey>
 		<![CDATA[
 			INSERT INTO BBS_NOTI_SURVEY(
@@ -2050,7 +2050,7 @@
 			, #{tmpNotiSeq}
 			, #{tmlnSeq}
 			, #{userNotiSeq}
-			, TO_DATE(#{surveyClosDttm}, 'YYYY-MM-DD HH24:MI:SS')
+			, TO_DATETIME(#{surveyClosDttm}, 'YYYY-MM-DD HH24:MI:SS')
 			, #{surveyRsltOpenYn}
 			, #{surveyConts}
 			, #{surveyTp}
@@ -2069,7 +2069,7 @@
 	<insert id="insertBbsNotiSurveyExmpl">
 		<selectKey keyProperty="exmplNo" resultType="int" order="BEFORE" >
 		  SELECT SEQ_NOTI_EXMPL.NEXTVAL As exmplNo 
-			FROM DUAL
+			FROM DB_ROOT
 	    </selectKey>
 		<![CDATA[
 			INSERT INTO Bbs_NOTI_SURVEY_EXMPL(
@@ -2154,13 +2154,13 @@
                   CONNECT BY PRIOR DEPT_CODE = PAR_DEPT_CODE
                     UNION ALL
                    SELECT '' AS DEPT_CODE, #{userId} AS EMP_CODE, '' AS ALL_CODE, '' AS PUB_CODE 
-                     FROM DUAL 
+                     FROM DB_ROOT 
                     UNION ALL 
                    SELECT '' AS DEPT_CODE, '' AS EMP_CODE, 'ALL' AS ALL_CODE, '' AS PUB_CODE 
-                     FROM DUAL 
+                     FROM DB_ROOT 
                     UNION ALL 
                    SELECT '' AS DEPT_CODE, '' AS EMP_CODE, '' AS ALL_CODE, 'PUB' AS PUB_CODE 
-                     FROM DUAL )
+                     FROM DB_ROOT )
 	</select>
 		
 	
@@ -2180,7 +2180,7 @@
 		<if test="notiTitleOrgn != null and notiTitleOrgn != ''"> , NOTI_TITLE_ORGN = #{notiTitleOrgn} </if>
 		<if test="titleBoldYn != null and titleBoldYn != ''"> , TITLE_BOLD_YN = #{titleBoldYn} </if>
 		<if test="titleColorDiv != null and titleColorDiv != ''"> , TITLE_COLOR_DIV = #{titleColorDiv} </if>
-		<if test="notiConts != null and notiConts != ''"> , NOTI_CONTS = #{notiConts} </if>
+		<if test="notiConts != null and notiConts != ''"> , NOTI_CONTS = CHAR_TO_CLOB(#{notiConts}) </if>
 		<if test="linkUrl != null and linkUrl != ''"> , LINK_URL = #{linkUrl} </if>
 		<if test="notiTp != null and notiTp != ''"> , NOTI_TP = #{notiTp} </if>
 		<if test="notiKind != null and notiKind != ''"> , NOTI_KIND = #{notiKind} </if>
@@ -2190,8 +2190,8 @@
 		<if test="userName != null and userName != ''"> , USER_NAME = #{userName} </if>
 		<if test="editDiv != null and editDiv != ''"> , EDIT_DIV = #{editDiv} </if>
 		<if test="rsrvYn != null and rsrvYn != ''"> , RSRV_YN = #{rsrvYn} </if>		
-		<if test="notiBgnDttm != null and notiBgnDttm != ''">, NOTI_BGN_DTTM = CASE WHEN #{rsrvYn} = 'Y' THEN TO_DATE(#{notiBgnDttm}, 'YYYY-MM-DD HH24:MI:SS') ELSE sysdate END </if>
-		<if test="notiEndDttm != null and notiEndDttm != ''"> , NOTI_END_DTTM = TO_DATE(#{notiEndDttm}, 'YYYY-MM-DD HH24:MI:SS') </if>
+		<if test="notiBgnDttm != null and notiBgnDttm != ''">, NOTI_BGN_DTTM = CASE WHEN #{rsrvYn} = 'Y' THEN TO_DATETIME(#{notiBgnDttm}, 'YYYY-MM-DD HH24:MI:SS') ELSE sysdate END </if>
+		<if test="notiEndDttm != null and notiEndDttm != ''"> , NOTI_END_DTTM = TO_DATETIME(#{notiEndDttm}, 'YYYY-MM-DD HH24:MI:SS') </if>
 		<if test="notiOpenDiv != null and notiOpenDiv != ''"> , NOTI_OPEN_DIV = #{notiOpenDiv} </if>
 		<if test="notiOpenDivSpec != null and notiOpenDivSpec != ''"> , NOTI_OPEN_DIV_SPEC = #{notiOpenDivSpec} </if>
 		<if test="publAsgnDiv != null and publAsgnDiv != ''"> , PUBL_ASGN_DIV = #{publAsgnDiv} </if>
@@ -2521,7 +2521,7 @@
 		  , UPD_DTTM
 		)
 	VALUES ( #{id}
-		  , #{conts}
+		  , CHAR_TO_CLOB(#{conts})
 		  , #{delYn}
 		  , #{regrId}
 		  , #{regrName}
