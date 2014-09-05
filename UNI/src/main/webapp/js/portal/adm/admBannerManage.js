@@ -99,7 +99,7 @@ $(document).ready(function () {
 			return false;
 		}		
 		
-		$("#expoBgnDttm").val($("#expoBgnDttm_v").val().replace(/-/g,''));
+		$("#expoBgnDttm").val($("#expoBgnDttm_v").val().replace(/-/g,'')+"000000");
 		$("#expoEndDttm").val($("#expoEndDttm_v").val().replace(/-/g,'')+"235959");
 		
 		var sortSeq = 0;

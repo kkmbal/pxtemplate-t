@@ -139,15 +139,15 @@
 		) VALUES (
 		    #{popId}																	
 			,#{popTitle}																		
-			,TO_DATE(#{expoBgnDttm, jdbcType=VARCHAR}, 'YYYYMMDDHH24MISS')																	
-			,TO_DATE(#{expoEndDttm, jdbcType=VARCHAR}, 'YYYYMMDDHH24MISS')
+			,TO_DATETIME(#{expoBgnDttm, jdbcType=VARCHAR}, 'YYYYMMDDHH24MISS')																	
+			,TO_DATETIME(#{expoEndDttm, jdbcType=VARCHAR}, 'YYYYMMDDHH24MISS')
 			,#{parRowPos}
 			,#{rowPos}
 			, #{popKind}
 			, #{expoYn}
 			, #{linkUrl}
 			, #{linkKind}				
-			, #{popConts}				
+			, CHAR_TO_CLOB(#{popConts})				
 			,#{delYn}
 			,#{regrId}
 			,SYSDATE
@@ -161,15 +161,15 @@
 		UPDATE ADM_POP_INFO         
 		SET
 			POP_TITLE = #{popTitle}
-			, EXPO_BGN_DTTM = TO_DATE(#{expoBgnDttm, jdbcType=VARCHAR}, 'YYYYMMDDHH24MISS')
-			, EXPO_END_DTTM = TO_DATE(#{expoEndDttm, jdbcType=VARCHAR}, 'YYYYMMDDHH24MISS')
+			, EXPO_BGN_DTTM = TO_DATETIME(#{expoBgnDttm, jdbcType=VARCHAR}, 'YYYYMMDDHH24MISS')
+			, EXPO_END_DTTM = TO_DATETIME(#{expoEndDttm, jdbcType=VARCHAR}, 'YYYYMMDDHH24MISS')
 			, PAR_ROW_POS = #{parRowPos}                                                              
 			, ROW_POS = #{rowPos}  
 			, POP_KIND = #{popKind}
 			, EXPO_YN = #{expoYn}
 			, LINK_URL = #{linkUrl}
 			, LINK_KIND = #{linkKind}				                                                            
-			, POP_CONTS = #{popConts}				                                                            
+			, POP_CONTS = CHAR_TO_CLOB(#{popConts})				                                                            
 			, UPDR_ID = #{updrId}
 			, UPD_DTTM = SYSDATE 
  		WHERE POP_ID = #{popId}    

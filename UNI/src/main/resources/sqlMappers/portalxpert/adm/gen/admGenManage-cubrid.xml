@@ -455,8 +455,8 @@
 			, #{linkCatOrder, javaType=Long, jdbcType=NUMERIC}
 			, SYSDATE
 			, #{insMan}
-			, ''
-			, ''
+			, SYSDATE
+			, #{insMan}
 		)
 	</insert>
 	
@@ -685,8 +685,8 @@
 			, #{popupUseGb, javaType=String, jdbcType=VARCHAR}
 			, SYSDATE
 			, #{insMan}
-			, ''
-			, ''
+			, SYSDATE
+			, #{insMan}
 			, #{mainDspGb, javaType=String, jdbcType=VARCHAR}
 			, #{endDate, javaType=String, jdbcType=VARCHAR}
 			, #{linkSnm, javaType=String, jdbcType=VARCHAR}

@@ -121,8 +121,8 @@
 		) VALUES (
 		    #{bnrId}																	
 			,#{bnrTitle}																		
-			,TO_DATE(#{expoBgnDttm, jdbcType=VARCHAR}, 'YYYYMMDDHH24MISS')																	
-			,TO_DATE(#{expoEndDttm, jdbcType=VARCHAR}, 'YYYYMMDDHH24MISS')
+			,TO_DATETIME(#{expoBgnDttm, jdbcType=VARCHAR}, 'YYYYMMDDHH24MISS')																	
+			,TO_DATETIME(#{expoEndDttm, jdbcType=VARCHAR}, 'YYYYMMDDHH24MISS')
 			,#{parRowPos}
 			,#{rowPos}
 			,#{linkUrl}
@@ -140,8 +140,8 @@
 		UPDATE ADM_BANNER_INFO         
 		SET
 			BNR_TITLE = #{bnrTitle}
-			, EXPO_BGN_DTTM = TO_DATE(#{expoBgnDttm, jdbcType=VARCHAR}, 'YYYYMMDDHH24MISS')
-			, EXPO_END_DTTM = TO_DATE(#{expoEndDttm, jdbcType=VARCHAR}, 'YYYYMMDDHH24MISS')
+			, EXPO_BGN_DTTM = TO_DATETIME(#{expoBgnDttm, jdbcType=VARCHAR}, 'YYYYMMDDHH24MISS')
+			, EXPO_END_DTTM = TO_DATETIME(#{expoEndDttm, jdbcType=VARCHAR}, 'YYYYMMDDHH24MISS')
 			, PAR_ROW_POS = #{parRowPos}                                                              
 			, ROW_POS = #{rowPos}                                                              
 			, LINK_URL = #{linkUrl}                                                              

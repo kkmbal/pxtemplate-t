@@ -13,11 +13,7 @@
  		<div id="left" class="lnb_area">
             
 			<div class="bbs_board">
-				<div class="lnb_clop">
-					<a href="#" class="ma_rig10" id="btn_all_close_cm"><span class="ico_allcl"></span>모두닫음</a>|
-					<a href="#" class="ma_lef10" id="btn_all_open_cm"><span class="ico_allop"></span>모두펼침</a>
-				</div>
-				<div class="tree">
+				<div class="non_tree">
 					<div class="content_wrap">
 						<div id="menuListDiv">
 							<ul id="menuTreeObj" class="ztree"></ul>
@@ -31,6 +27,10 @@
  		<!--//left-->
  		
 <script type="text/javascript">
+var menuId = '1';
+var authCd = '${sessionScope.pxLoginInfo.authCdStr}';
+var menuConts = '${sessionScope.pxLoginInfo.menuConts}';
+
 var left_menu_setting = {
 		edit: {
 				enable: false,
@@ -39,9 +39,11 @@ var left_menu_setting = {
 		},	
 		view: {
 			dblClickExpand: false,
-			showLine : true,
+			showLine : false,
+			showIcon : false,
 			showTitle : false,
-			selectedMulti:true
+			selectedMulti:false,
+			addDiyDom: addDiyDom
 		},
 		data: {
 			simpleData: { 
@@ -52,7 +54,8 @@ var left_menu_setting = {
 			enable: false
 		},
 		callback: {
-			onClick: zTreeOnClick 
+			onClick: zTreeOnClick,
+			beforeClick: beforeClick
 		}
 		
 	};
@@ -68,54 +71,91 @@ var left_menu_setting = {
 	var doPage = function(treeId, page){
 
 		if(treeId == 'menuTreeObj'){
-			//parent.document.getElementById("admFrame").src = "${pageContext.request.contextPath}/"+page;
-			parent.document.getElementById("contentfrm").src = "${pageContext.request.contextPath}/"+page;
+			if(page.match(/^\//g)) page = page.substring(1);
+			parent.document.getElementById("contentfrm").src = WEB_HOME+"/"+page;
 		}
 		
 	};
 	
-	function expandNodes(nodes) {
-		if (!nodes)
-			return;
-		var zTree = $.fn.zTree.getZTreeObj("menuTreeObj");
-		for ( var i = 0, l = nodes.length; i < l; i++) {
-			zTree.expandNode(nodes[i], false, false, false);
+	function addDiyDom(treeId, treeNode) {
+		var spaceWidth = 5;
+		var switchObj = $("#" + treeNode.tId + "_switch"),
+		icoObj = $("#" + treeNode.tId + "_ico");
+		switchObj.remove();
+		icoObj.before(switchObj);
+
+		if (treeNode.level > 1) {
+			var spaceStr = "<span style='display: inline-block;width:" + (spaceWidth * treeNode.level)+ "px'></span>";
+			switchObj.before(spaceStr);
 		}
-	}	
+	}
+	
+	function beforeClick(treeId, treeNode) {
+		if (treeNode.level == 0 ) {
+			var zTree = $.fn.zTree.getZTreeObj("menuTreeObj");
+			zTree.expandNode(treeNode);
+			return false;
+		}
+		return true;
+	}
+	
+	
 	
 $(function(){
 	
-	var zNodes = $.parseJSON('${sessionScope.pxLoginInfo.menuConts}');
-	var treeObj = $.fn.zTree.init($("#menuTreeObj"), left_menu_setting, PortalCommon.getChildZMenuById(zNodes, "1")); //관리자메뉴
-	treeObj.expandAll(true);		
+	$("body").remove('menuTreeObj');
+	$("body").append("<div id='menuTreeObj' style='display:none'></div>");
+	
+	
+	var treeObjMenu = $("#menuTreeObj");
+
+	var zNodes = $.parseJSON(menuConts);
+	var treeObj = $.fn.zTree.init($("#menuTreeObj"), left_menu_setting, PortalCommon.getChildZMenuById(zNodes, menuId));
+	treeObj.expandAll(true);
+	
+	
+	var zTree_Menu = $.fn.zTree.getZTreeObj("menuTreeObj");
+	var curMenu = zTree_Menu.getNodes()[0].children[0].children[0];
+	zTree_Menu.selectNode(curMenu);
+
+	treeObjMenu.hover(function () {
+		if (!treeObjMenu.hasClass("showIcon")) {
+			treeObjMenu.addClass("showIcon");
+		}
+	}, function() {
+		treeObjMenu.removeClass("showIcon");
+	});
 	
 	/*
 	PortalCommon.getJson({
-		url : "${pageContext.request.contextPath}/adm/sys/getAuthMenu.do?format=json",
-		data : 'authCd=${sessionScope.pxLoginInfo.authCdStr}',
+		url : WEB_HOME+"/adm/sys/getAuthMenu.do?format=json",
+		data : 'authCd='+authCd,
 		success : function(data) {
 			if (data.jsonResult.success === true) {
+				var treeObjMenu = $("#menuTreeObj");
 
 				var zNodes = $.parseJSON(data.menuList);
-				var treeObj = $.fn.zTree.init($("#menuTreeObj"), left_menu_setting, PortalCommon.getChildZMenuById(zNodes, "1")); //관리자메뉴
-				treeObj.expandAll(true);					
+				var treeObj = $.fn.zTree.init($("#menuTreeObj"), left_menu_setting, PortalCommon.getChildZMenuById(zNodes, menuId));
+				treeObj.expandAll(true);
 				
+				
+				var zTree_Menu = $.fn.zTree.getZTreeObj("menuTreeObj");
+				var curMenu = zTree_Menu.getNodes()[0].children[0].children[0];
+				zTree_Menu.selectNode(curMenu);
+
+				treeObjMenu.hover(function () {
+					if (!treeObjMenu.hasClass("showIcon")) {
+						treeObjMenu.addClass("showIcon");
+					}
+				}, function() {
+					treeObjMenu.removeClass("showIcon");
+				});
+
 			};
 		}
-	});		
+	});	
 	*/
 	
-	
-	
-	
-	$("#btn_all_open_cm").click(function() {//모두열림
-		var treeObj = $.fn.zTree.getZTreeObj("menuTreeObj");
-		treeObj.expandAll(true);
-	});
-	$("#btn_all_close_cm").click(function() {//모두닫힘
-		var treeObj = $.fn.zTree.getZTreeObj("menuTreeObj");
-		expandNodes(treeObj.getNodes());
-	});
 	
 });
 </script>           

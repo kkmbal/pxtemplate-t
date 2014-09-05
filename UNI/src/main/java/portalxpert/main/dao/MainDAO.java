@@ -221,7 +221,7 @@ public class MainDAO  extends EgovAbstractMapper{
 	 * @author crossent
 	 */
 	public int getNotiPopupCnt() throws Exception{
-		return (Integer) selectByPk("MainDAOgetNotiPopupCnt.", null);
+		return (Integer) selectByPk("MainDAOgetNotiPopupCnt.MainDAOgetNotiPopupCnt", null);
 	}
 	
 	

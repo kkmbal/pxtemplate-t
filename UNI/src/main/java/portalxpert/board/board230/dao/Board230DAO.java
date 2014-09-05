@@ -17,7 +17,7 @@ import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
 public class Board230DAO extends EgovAbstractMapper  {
 
 	public int getMovieKey() throws Exception{
-		return (Integer) selectByPk("Board230DAO.", null);
+		return (Integer) selectByPk("Board230DAO.getMovieKey", null);
 	}
 	
 	

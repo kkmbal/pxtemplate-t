@@ -47,7 +47,7 @@
 					</div>
 				</div>		
 				<div class="tree" style="margin-top:10px;width:370px;height:330px !important ; border:1px solid #ddd">
-					<ul id="treeObj" class="ztree"></ul>
+					<ul id="treeObj" class="ztree" style="height:300px;overflow-y:auto;"></ul>
 				</div>			
 			</div>
 			<div class="fr">
@@ -57,7 +57,8 @@
 						사용자명 <input type="text" value="" id="userName" name="name" class="text ml5mr10" style="width:100px;ime-mode:active;" title="검색어를 입력합니다." /> 
 						<button class="btn_style7_2" type="button" id="btnUserSearch">검색</button>
 					</div>
-				</div>			
+				</div>	
+				<div style="hdight:340px;overflow-x:hidden;overflow-y:auto;">		
 				<table class="tbl_form" style="width:400px !important;margin-top:10px;" summary="이 표는 조직도 표입니다.">
 				<caption>조직도</caption>
 				<colgroup>
@@ -82,6 +83,7 @@
 
 				</tbody>
 				</table>
+				</div>
 			</div>
 			
 			<div class="pop_btn_sec">

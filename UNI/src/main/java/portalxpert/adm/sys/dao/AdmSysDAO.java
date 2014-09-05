@@ -400,6 +400,6 @@ public class AdmSysDAO extends EgovAbstractMapper {
      * @exception Exception
      */
 	public void deleteUserAuth(AdmSysUserAuthVO admSysUserAuthVO){
-		delete("AdmSysDAO.", admSysUserAuthVO);
+		delete("AdmSysDAO.deleteUserAuth", admSysUserAuthVO);
 	}
 }

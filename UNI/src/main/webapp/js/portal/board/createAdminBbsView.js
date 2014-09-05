@@ -940,7 +940,7 @@
 			$('#oupOpenUseType_010').attr("disabled", "true");
 			$('#oupOpenUseType_020').attr("disabled", "true");
 		}
-	   $('input:radio[name=oupOpenUseType]:input[value='+bbsList[0].outsideOpenDivSpec+']').attr("checked", "true"); //외부공개상세
+	   //$('input:radio[name=oupOpenUseType]:input[value='+bbsList[0].outsideOpenDivSpec+']').attr("checked", "true"); //외부공개상세
 	   
 	   //추가
 	   $("#id_boardName").attr("disabled", true);
