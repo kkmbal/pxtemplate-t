@@ -501,19 +501,11 @@
 			SELECT    P.USER_ID
 	                , P.USER_NAME
 	                , P.USER_NICK 
-	                , P.USER_INTRO
-	                , P.SLCT_POTO_SEQ
-	                , P.USER_JOB
-	                , P.USER_BIRTH
 	                , P.DEPT_CODE 
-	                , P.SMS_BAL_CNT
-	                , P.SMS_ALL_CNT
 	                , P.DEPT_FNAME
-	                , P.TITLENAME
 	                , P.TELEPHONENUMBER
 	                , P.MOBILE
 	                , P.MAIL
-	                , P.INTERMAIL
 	                , P.USER_PASSWORD
 	                , P.DEL_YN
 	                , RNUM SEQ		
@@ -526,19 +518,11 @@
 						SELECT    PU.USER_ID
 				                , PU.USER_NAME
 				                , USER_NICK 
-				                , USER_INTRO
-				                , SLCT_POTO_SEQ
-				                , USER_JOB /*업무분장*/
-				                , USER_BIRTH /*생년월일*/
 				                , LD.DEPT_CODE 
-				                , PU.SMS_BAL_CNT
-				                , PU.SMS_ALL_CNT
-				                , PU.DEPT_FNAME
-				                , PU.TITLENAME
+				                , LD.DEPT_FNAME
 				                , PU.TELEPHONENUMBER
 				                , PU.MOBILE
 				                , PU.MAIL
-				                , PU.INTERMAIL
 				                , PU.USER_PASSWORD
 				                , PU.DEL_YN
 				        FROM      PSN_USER_INFO PU
@@ -559,7 +543,7 @@
 				) B	
 			) P
 			<![CDATA[
-			WHERE RNUM <= #{recordCountPerPage}  and RNUM >= #{firstIndex}
+			WHERE RNUM <= #{recordCountPerPage} + #{firstIndex}  and RNUM > #{firstIndex}
 			]]>			
 	</select>
 	
@@ -590,20 +574,10 @@
 		SELECT    PU.USER_ID
                 , PU.USER_NAME
                 , USER_NICK 
-                , USER_INTRO
-                , SLCT_POTO_SEQ
-                , REST_ID
-                , USER_JOB /*업무분장*/
-                , USER_BIRTH /*생년월일*/
                 , LD.DEPT_CODE 
-                , PU.SMS_BAL_CNT
-                , PU.SMS_ALL_CNT
-                , PU.DEPT_FNAME
-                , PU.TITLENAME
-                , PU.TELEPHONENUMBER
+                , LD.DEPT_FNAME
                 , PU.MOBILE
                 , PU.MAIL
-                , PU.INTERMAIL
                 , PU.USER_PASSWORD
                 , PU.DEL_YN
         FROM      PSN_USER_INFO PU
@@ -720,7 +694,7 @@
 				) B	
 			) P
 			<![CDATA[
-			WHERE RNUM <= #{recordCountPerPage}  and RNUM >= #{firstIndex}
+			WHERE RNUM <= #{recordCountPerPage} + #{firstIndex}  and RNUM > #{firstIndex}
 			]]>			
 	</select>	
 	

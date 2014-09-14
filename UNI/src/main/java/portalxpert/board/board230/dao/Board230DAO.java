@@ -2,11 +2,15 @@ package portalxpert.board.board230.dao;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Repository;
 
 import portalxpert.board.board100.model.BbsNotiApndFileVO;
 import portalxpert.board.board100.model.BbsNotiInfoVO;
+import portalxpert.board.board100.model.BbsNotiSurveyAnswVO;
 import portalxpert.board.board100.model.BbsNotiSurveyExmplVO;
+import portalxpert.board.board100.model.BbsNotiSurveyRsltVO;
 import portalxpert.board.board100.model.BbsNotiSurveyVO;
 import portalxpert.board.board230.model.BbsTmpNotiApndFileVO;
 import portalxpert.board.board230.model.BbsTmpNotiInfoVO;
@@ -204,5 +208,110 @@ public class Board230DAO extends EgovAbstractMapper  {
     	return delete("Board230DAO.deleteBbsTmpNotiUserMap", vo);
     }
     
+    /**
+     * yblee
+     * 임시 설문 정보 등록 
+     * @param PsnTmlnApndFileVO - 입력할 정보가 담긴 VO 
+     * @return 임시 입력 성공 건수
+	 * @exception Exception
+     */
+    public int insertBbsTmpNotiSurveyNew(BbsNotiSurveyVO vo) throws Exception  {
+    	return insert("Board230DAO.insertBbsTmpNotiSurveyNew", vo);
+    }
+    
+    /**
+     * yblee
+     * 임시 설문 보기 정보 등록 
+     * @param PsnTmlnApndFileVO - 입력할 정보가 담긴 VO 
+     * @return 입력 성공 건수
+	 * @exception Exception
+     */
+    public int insertBbsTmpNotiSurveyExmplNew(BbsNotiSurveyExmplVO vo) throws Exception  {
+    	return insert("Board230DAO.insertBbsTmpNotiSurveyExmplNew", vo);
+    }
+    
+    /**
+     * yblee
+	 * 임시저장 설문정보  조회
+	 * @param BbsNotiSurveyVO - 조회할 정보가 담긴 Map
+	 * @return 임시저장 설문 정보 
+	 * @exception
+	 */
+    public List<BbsNotiSurveyVO> getBbsNotiSurveyListNew(BbsNotiSurveyVO vo) {
+    	return (List<BbsNotiSurveyVO>)list("Board230DAO.getBbsNotiSurveyListNew", vo);
+    }
+    
+    /**
+     * yblee
+	 * 임시저장 설문정보 보기 조회
+	 * @param BbsNotiSurveyExmplVO - 조회할 정보가 담긴 Map
+	 * @return 임시저장 설문 보기 정보 
+	 * @exception
+	 */
+    public List<BbsNotiSurveyExmplVO> getBbsNotiSurveyExmplListNew(BbsNotiSurveyExmplVO vo) {
+    	return (List<BbsNotiSurveyExmplVO>)list("Board230DAO.getBbsNotiSurveyExmplListNew", vo);
+    }
+    
+    /**
+     * yblee
+     * 설문 보기 결과 조회 
+     * @param BbsNotiSurveyAnswVO - 입력할 정보가 담긴 VO 
+     * @return 설문 보기 결과 정보
+	 * @exception Exception
+     */
+    public List<BbsNotiSurveyAnswVO> getBbsNotiSurveyAnswList(BbsNotiSurveyAnswVO vo){
+    	return (List<BbsNotiSurveyAnswVO>)list("Board230DAO.getBbsNotiSurveyAnswList", vo);
+    }
+    
+    /**
+     * yblee
+     * 설문 결과 문제별 카운트 조회 
+     * @param BbsNotiSurveyRsltVO - 입력할 정보가 담긴 VO 
+     * @return 설문 보기 결과 정보
+	 * @exception Exception
+     */
+    public List<BbsNotiSurveyRsltVO> getSurveyRsltAnswCntList(BbsNotiSurveyRsltVO vo){
+    	return (List<BbsNotiSurveyRsltVO>)list("Board230DAO.getSurveyRsltAnswCntList", vo);
+    }
+    
+    /**
+     * yblee
+     * 설문 결과 참여인원수 조회 
+     * @param BbsNotiSurveyRsltVO - 입력할 정보가 담긴 VO 
+     * @return 설문 결과 참여인원수
+	 * @exception Exception
+     */
+    public int getSurveyRsltMemberCnt(BbsNotiSurveyRsltVO vo) throws Exception {
+		return (Integer) selectByPk("Board230DAO.getSurveyRsltMemberCnt", vo);
+	}
+    
+    /**
+     * yblee
+  	 * 설문결과 내 직접입력 및 주관식 엑셀다운
+  	 * @param BbsNotiSurveyRsltVO - 입력할 정보가 담긴 VO 
+  	 * @return 직접입력 및 주관식 정보  
+  	 * @exception Exception
+  	 */
+    public List<BbsNotiSurveyRsltVO> getSurveyRsltExcelDown(BbsNotiSurveyRsltVO vo){
+    	return (List<BbsNotiSurveyRsltVO>)list("Board230DAO.getSurveyRsltExcelDown", vo);
+    }
+    
+	/**
+     * 설문제출 여부 
+     * @param   
+     * @return 설문 제출 여부 
+     */
+ 	public int getBbsNotiSurveyResultYN(BbsNotiSurveyAnswVO vo)  throws Exception {
+		return (Integer) selectByPk("Board230DAO.getBbsNotiSurveyResultYN", vo);
+	}
+ 	
+ 	/**
+      * 소통글에 대한 설문 결과 등록 
+      * @param 소통글에 대한 설문 결과정보  
+      * @return 입력 객체
+      */
+ 	public BbsNotiSurveyAnswVO insertBbsNotiSurveyAnsw(BbsNotiSurveyAnswVO vo) throws Exception{
+		return (BbsNotiSurveyAnswVO) selectByPk("Board230DAO.insertBbsNotiSurveyAnsw", vo);
+	}
 }
 

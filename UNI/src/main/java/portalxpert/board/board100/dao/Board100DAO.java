@@ -672,4 +672,27 @@ public class Board100DAO  extends EgovAbstractMapper {
     public BbsBoardInfoVO getAdminBoardOpen(BbsBoardInfoVO vo) throws Exception {
     	return (BbsBoardInfoVO) selectByPk("Board100DAO.getAdminBoardOpen", vo);
     }
+    
+    /**
+     * yblee
+     * 설문 정보 등록 
+     * @param PsnTmlnApndFileVO - 입력할 정보가 담긴 VO 
+     * @return 입력 성공 건수
+	 * @exception Exception
+     */
+    public int insertBbsNotiSurveyNew(BbsNotiSurveyVO vo) throws Exception{
+    	return insert("Board100DAO.insertBbsNotiSurveyNew", vo);
+    }
+    
+    
+    /**
+     * yblee
+     * 설문 보기 정보 등록 
+     * @param PsnTmlnApndFileVO - 입력할 정보가 담긴 VO 
+     * @return 입력 성공 건수
+	 * @exception Exception
+     */
+    public int insertBbsNotiSurveyExmplNew(BbsNotiSurveyExmplVO vo) throws Exception{
+    	return insert("Board100DAO.insertBbsNotiSurveyExmplNew", vo);
+    }
 }
