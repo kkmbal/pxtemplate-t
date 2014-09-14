@@ -92,7 +92,7 @@
 .btn_style6_2,
 .btn_style6_3,
 .btn_style6_4,
-.btn_style6_5 {height:24px;margin-left:4px;background-position:0 -701px;vertical-align:top;color:#646464;font-family:'µ¸¿ò';font-weight:bold}
+.btn_style6_5 {height:24px;margin-left:4px;background-position:0 -701px;vertical-align:top;color:#646464;font-family:'ï¿½ï¿½ï¿½ï¿½';font-weight:bold}
 .btn_style6_2:hover,.btn_style6_2:focus,
 .btn_style6_3:hover,.btn_style6_3:focus,
 .btn_style6_4:hover,.btn_style6_4:focus,
@@ -106,7 +106,7 @@
 .btn_style7_2,
 .btn_style7_3,
 .btn_style7_4,
-.btn_style7_5 {height:24px;margin-left:4px;background-position:0 -771px;vertical-align:top;color:#fff;font-family:'µ¸¿ò';font-weight:bold;}
+.btn_style7_5 {height:24px;margin-left:4px;background-position:0 -771px;vertical-align:top;color:#fff;font-family:'ï¿½ï¿½ï¿½ï¿½';font-weight:bold;}
 .btn_style7_2:hover,.btn_style7_2:focus,
 .btn_style7_3:hover,.btn_style7_3:focus,
 .btn_style7_4:hover,.btn_style7_4:focus,
@@ -116,7 +116,7 @@
 .btn_style7_4 {width:88px;background-image:url(../images/bg_set_s4.png)}
 .btn_style7_5 {width:100px;background-image:url(../images/bg_set_s5.png)}
 
-.btn_style8_3 {width:65px;height:24px;background:url(../images/btn_style8_3.png) 0 0;vertical-align:top;color:#000000;font-family:'µ¸¿ò';font-weight:bold;}
+.btn_style8_3 {width:65px;height:24px;background:url(../images/btn_style8_3.png) 0 0;vertical-align:top;color:#000000;font-family:'ï¿½ï¿½ï¿½ï¿½';font-weight:bold;}
 
 /* etc */
 .btn_excel {width:120px;height:30px;background:url(../images/btn_excel.png) no-repeat 0 0;vertical-align:middle;text-align:left;padding-left:30px}
@@ -152,13 +152,13 @@
 .btn_print{width:24px;height:24px;background:url(../images/bg_schedule.png) no-repeat -75px 0}
 .btn_print span{visibility:hidden;position:absolute;top:-9000px}
 
-/* ¹öÆ°Ãß°¡ (³ôÀÌ³·Àº°ª) */
+/* ï¿½ï¿½Æ°ï¿½ß°ï¿½ (ï¿½ï¿½ï¿½Ì³ï¿½ï¿½ï¿½ï¿½ï¿½) */
 .btn_st01 {display:inline-block;height:24px;margin-left:2px;padding-right:2px;min-width:25px;background:url(../images/bg_btn01.png) no-repeat 100% 0;}
 .btn_st01 button {display:inline-block;margin-left:-2px;padding-left:15px;padding-right:13px;line-height:24px;color:#000;font-weight:bold;background:url(../images/bg_btn01.png) no-repeat 0 0;}
 .btn_st01.w01 button {padding-left:10px;padding-right:6px;.padding-left:6px;.padding-right:2px;}
 .btn_st02 {display:inline-block;height:24px;margin-left:2px;padding-right:2px;min-width:25px;background:url(../images/bg_btn02.png) no-repeat 100% 0;}
 .btn_st02 button {display:inline-block;margin-left:-2px;padding-left:15px;padding-right:13px;line-height:24px;color:#000;background:url(../images/bg_btn02.png) no-repeat 0 0;}
-.btn_st02.w01 button {padding-left:10px;padding-right:8px;.padding-left:6px;.padding-right:4px;}
+.btn_st02.w01 button {padding-left:9px;padding-right:8px;.padding-left:6px;.padding-right:4px;}
 .btn_st02:hover {background:url(../images/bg_btn02_ov.png) no-repeat 100% 0;}
 .btn_st02:hover button {background:url(../images/bg_btn02_ov.png) no-repeat 0 0;}
 .btn_st02.disabled {background:url(../images/bg_btn02_ov.png) no-repeat 100% 0;}

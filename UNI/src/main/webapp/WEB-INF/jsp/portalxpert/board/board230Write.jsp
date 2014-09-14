@@ -241,7 +241,7 @@
 		</ul>
 		</div>
 		<div id="movieFileDiv" class="listbox">
-			<dl></dl>
+			<ul></ul>
 		</div>
 		</div>
 	</td>
@@ -268,9 +268,9 @@
 					</form>
 				</div>
 				<div id="innoApDiv" class="listbox" style="display:none;">
-					<ul></ul>
+					<dl></dl>
 				</div>
-				</div>
+				 
 		</td>
 	</tr>
 	</tbody>

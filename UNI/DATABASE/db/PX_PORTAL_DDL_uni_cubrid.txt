@@ -616,6 +616,7 @@ CREATE TABLE BBS_NOTI_SURVEY
 	INPUT_ADD_YN		VARCHAR(1),
 	SKIP_PERMIT_YN		VARCHAR(1),
 	MULTI_SEL_PERMIT_YN 	VARCHAR(1),    
+	SURVEY_OPEN_DTTM	DATETIME,
     DEL_YN              VARCHAR(1) DEFAULT 'N',
     REGR_ID             VARCHAR(64),
     REGR_NAME           VARCHAR(100),
@@ -633,6 +634,7 @@ CREATE TABLE BBS_NOTI_SURVEY_ANSW
     ANSWMAN_ID      VARCHAR(64) NOT NULL,
     ANSWMAN_NAME    VARCHAR(50),
     ANSW_EXMPL_NO   INTEGER,
+    ANSW_CONTS		VARCHAR(4000),
     DEL_YN          VARCHAR(1) DEFAULT 'N',
     REGR_ID         VARCHAR(64),
     REGR_NAME       VARCHAR(100),
@@ -1144,6 +1146,37 @@ MINVALUE 1
 MAXVALUE 9999999999999999999999999999;
 
 ------------------------------------------- ************** COMMENT ******************* -------------------------------------------
+
+------------------------------------------- ************** VIEW ******************* -------------------------------------------
+CREATE OR REPLACE VIEW PSN_USER_INFO AS
+SELECT USER_ID AS ID
+          ,USER_ID AS SID
+          ,USER_ID
+          ,USER_NAME
+          ,USER_NAME AS REGR_NAME
+          ,USER_NAME AS USER_NICK
+          ,USER_NAME AS NAME
+          ,USER_NAME AS NICKNAME
+          ,DEPT_ID AS OUCODE
+          ,DEPT_ID AS DEPT_CODE
+          ,DEPT_NAME AS OU
+          ,DEPT_NAME
+          ,SYSMAIL AS MAIL
+          ,SYSMAIL AS INTERMAIL
+          ,'' AS TELEPHONENUMBER
+          ,'' AS MOBILE
+          ,'' AS USER_PASSWORD
+          ,'N' AS DEL_YN
+FROM TCN_USERINFORMATION_BASIC;
+
+
+CREATE OR REPLACE VIEW PSN_DEPT_INFO AS
+SELECT ORG_ID AS DEPT_CODE
+          ,ORG_NAME AS DEPT_NAME
+          ,ORG_PARENT_ID AS PAR_DEPT_CODE
+          ,DESCRIPTION AS DEPT_FNAME
+FROM TCN_ORGANIZATIONINFORMATION
+------------------------------------------- ************** VIEW ******************* -------------------------------------------
  
 INSERT INTO _CUB_SCHEMA_COMMENTS VALUES('ADM_BANNER_INFO','*','배너정보',SYSDATETIME,'DBA');
 INSERT INTO _CUB_SCHEMA_COMMENTS VALUES('ADM_BANNER_INFO','BNR_ID','배너_ID',SYSDATETIME,'DBA');

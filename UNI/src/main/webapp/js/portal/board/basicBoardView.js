@@ -1046,15 +1046,10 @@
 					+'  <span class="textbox_btns">'
 					+'	<span class="btn_st01 w01"><button type="button" onclick="fnUpdateBbsNotiOpnForView('+notiOpn1[i].notiOpnSeq+')">등록</button></span>'
 					+'	<span class="btn_st02 w01"><button type="button" onclick="fnCancleBbsNotiOpnForView(\'opnTxt_'+notiOpn1[i].notiOpnSeq+'\')">취소</button></span>'
+					+'  </span>'
 					+'</div>'					
 					+'</li>');
 		
-			
-			
-		
-			
-			
-			
 			
 			$("#btnOpn_"+notiOpn1[i].notiOpnSeq).click(function(){//의견
 				
@@ -1363,6 +1358,7 @@
 					listYn = 'Y';
 				}
 				
+				//parent.document.getElementById("contentfrm").src=
 				location.href = 
 					WEB_HOME+"/board210/getBoardInfoList.do?boardId="
 							+boardId+"&pageIndex="+pageIndex+"&pageUnit="+pageUnit
