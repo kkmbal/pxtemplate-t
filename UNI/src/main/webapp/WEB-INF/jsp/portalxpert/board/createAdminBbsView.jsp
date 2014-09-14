@@ -61,8 +61,8 @@
 				<label for="radio01">일반</label>
 				<input type="radio" id="boardForm_030_010" value="030_010" name="boardKind" title="라디오2을 선택합니다." />
 				<label for="radio02">이미지</label>
-				<input type="radio" id="boardForm_030_020" value="030_020" name="boardKind" title="라디오2을 선택합니다." />
-				<label for="radio02">동영상</label>
+<!-- 				<input type="radio" id="boardForm_030_020" value="030_020" name="boardKind" title="라디오2을 선택합니다." /> -->
+<!-- 				<label for="radio02">동영상</label> -->
 				<input type="radio" id="boardKind_110" value="110" name="boardKind" title="라디오1을 선택합니다." />
 				<label for="radio01">설문조사</label>			
 				<input type="radio" id="boardKind_120" value="120" name="boardKind" title="라디오1을 선택합니다." />
