@@ -28,7 +28,7 @@
 			<h1  style="font-size:25px;font-weight:bold;">이미지 업로드</h1>
 		</div>
 		<div class="contents">
-		    <form id="detailForm" name="detailForm" action="<%=request.getContextPath()%>/board/innoUpload.do" enctype="multipart/form-data" method="post">
+		    <form id="detailForm" name="detailForm" action="<%=request.getContextPath()%>/comm/noProssessJsp.do?rtnJspUrl=portalxpert/board/innoUpload" enctype="multipart/form-data" method="post">
 			    <input type="text" class="text" id="fileName" style="width:300px" readonly>
 				<span class="file_wrap">
 					<button class="btn_style1_2" type="button">파일</button>
