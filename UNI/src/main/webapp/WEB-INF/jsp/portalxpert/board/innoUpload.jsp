@@ -18,7 +18,7 @@
 		String path = CommUtil.apndFileCopy(saveFileName); // temp -->real 이동
 		String fName = request.getContextPath() + WEB_DIR + path + "/" + saveFileName;
 
-		//System.out.println(fName);
+		System.out.println(fName);
 %>
   <script>
 	  window.opener.tinymce.execCommand('mceInsertContent', false, '<img src="<%=fName%>">');
