@@ -1328,7 +1328,8 @@
 			'apndFileOrgn' : fileorg,
 			'apndFileName' : filename,
 			'apndFileSeq' :  fileseq,
-			'notiId' : notiId
+			'notiId' : notiId,
+			'boardId' : boardId
 		 };
 		 
 		 var url =WEB_HOME+"/board100/bbsFileDownload.do?data="+encodeURI(JSON.stringify(jsonObject),"UTF-8");
@@ -1362,7 +1363,7 @@
 					listYn = 'Y';
 				}
 				
-				parent.document.getElementById("contentfrm").src= 
+				location.href = 
 					WEB_HOME+"/board210/getBoardInfoList.do?boardId="
 							+boardId+"&pageIndex="+pageIndex+"&pageUnit="+pageUnit
 							+"&searchCondition="+searchCondition

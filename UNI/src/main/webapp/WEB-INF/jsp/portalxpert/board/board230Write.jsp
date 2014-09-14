@@ -268,7 +268,7 @@
 					</form>
 				</div>
 				<div id="innoApDiv" class="listbox" style="display:none;">
-					<dl></dl>
+					<ul></ul>
 				</div>
 				</div>
 		</td>
@@ -287,6 +287,7 @@
 	</div>
 </div>
 
+<iframe id="dummy" name="dummy" width=0 height=0></iframe>
 
 <div style="display:none;">
 	<input type="radio" name="apndKind" value="010" checked>일반

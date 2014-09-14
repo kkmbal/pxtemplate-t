@@ -69,13 +69,13 @@
 
 
     <!-- MULTIPART RESOLVERS -->
-    <!-- regular spring resolver -->
+    <!-- regular spring resolver 
     <bean id="spring.RegularCommonsMultipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <property name="maxUploadSize" value="10000000" />
         <property name="maxInMemorySize" value="10000000" />
     </bean>
-
-    <!-- choose one from above and alias it to the name Spring expects -->
+	-->
+    <!-- choose one from above and alias it to the name Spring expects 
     <alias name="spring.RegularCommonsMultipartResolver" alias="multipartResolver" />
-
+	-->
 </beans>
